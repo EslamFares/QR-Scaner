@@ -49,25 +49,25 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             tabs: <Widget>[
               Tab(
                 icon: Icon(
-                  Icons.center_focus_strong,
+                  Icons.fullscreen,
                   color: Colors.amber,
-                  size: 35,
+                  size: 40,
                 ),
                 text: 'Full Scan',
               ),
               Tab(
                 icon: Icon(
-                  Icons.create,
-                  color: Colors.green,
+                  Icons.border_color,
+                  color: Colors.white,
                   size: 30,
                 ),
                 text: 'Generate QR',
               ),
               Tab(
                 icon: Icon(
-                  Icons.fullscreen,
-                  color: Colors.blue,
-                  size: 35,
+                  Icons.center_focus_strong,
+                  color: Colors.black,
+                  size: 40,
                 ),
                 text: 'Scan',
               ),
@@ -115,7 +115,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     ),
                     TextFormField(
                       maxLines: null,
-                      minLines: 2,
+                      minLines: 5,
                       controller: qrTextController,
                       autocorrect: true,
                       decoration: InputDecoration(
@@ -123,11 +123,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         contentPadding: const EdgeInsets.only(
                             left: 20, bottom: 20, top: 20),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue, width: 3),
-                          borderRadius: BorderRadius.circular(25.7),
+                          borderSide: BorderSide(color: Colors.blue, width: 2),
+                          borderRadius: BorderRadius.circular(15),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue, width: 5),
+                          borderSide: BorderSide(color: Colors.blue, width: 2),
                           borderRadius: BorderRadius.circular(25.7),
                         ),
                       ),
@@ -142,6 +142,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               width: 200,
               margin: EdgeInsets.only(left: 50, right: 50),
               child: FlatButton(
+                color: Colors.black,
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -151,6 +152,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       style: TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
+                          color: Colors.white,
                           letterSpacing: 1.1),
                     ),
                     Image(
@@ -173,7 +175,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 },
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50.0),
-                    side: BorderSide(color: Colors.green, width: 5)),
+                    side: BorderSide(color: Colors.blue, width: 5)),
               ),
             ),
           ],
@@ -255,34 +257,55 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               });
             }
           },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Icon(
-                Icons.camera_enhance,
-                color: Colors.red[900],
-                size: 35,
+          child: Container(
+            margin: EdgeInsets.all(50),
+            decoration: BoxDecoration(
+              color: Colors.white10,
+                border: Border.all(color: Colors.red,width: 3),
+              borderRadius: BorderRadius.all(
+                  Radius.circular(50)
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    ' permission',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Text(
-                    ' "First" ',
-                    style: TextStyle(color: Colors.red[900],fontSize: 20),
-                  ),
-                  Text(
-                    'for Camera',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
-              ),
-            ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.camera_enhance,
+                      color: Colors.red[900],
+                      size: 25,
+                    ),
+                    Icon(
+                      Icons.touch_app,
+                      color: Colors.white,
+                      size: 25,
+                    ),
+                  ],
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      ' permission',
+                      style: TextStyle(color: Colors.white,fontSize: 13),
+                    ),
+                    Text(
+                      ' "First" ',
+                      style: TextStyle(color: Colors.red[900],fontSize: 16),
+                    ),
+                    Text(
+                      'for Camera',
+                      style: TextStyle(color: Colors.white,fontSize: 13),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
           color: Colors.transparent,
         ),
@@ -291,6 +314,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   }
 
   ///setting(scan2)
+  bool copyed = false;
   QrReaderViewController _controller;
   bool isOk = false;
   String data;
@@ -308,36 +332,47 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            FlatButton(
-              onPressed: () async {
-                Map<PermissionGroup, PermissionStatus> permissions =
-                await PermissionHandler().requestPermissions([PermissionGroup.camera]);
-                print(permissions);
-                if (permissions[PermissionGroup.camera] == PermissionStatus.granted) {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return  CupertinoAlertDialog(
-                        title: Text("permission"),
-                        content: Text('Request permission is OK'),
-                        actions: <Widget>[
-                          CupertinoDialogAction(
-                            child: Text("confirm"),
-                            onPressed: () => Navigator.pop(context),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                  setState(() {
-                    isOk = true;
-                  });
-                }
-              },
-              child: Text('Request permission"First"',style: TextStyle(color: Colors.white),),
-              color: Colors.red[900],
+            SizedBox(height: 15,),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 75),
+              width: 280,
+              child: FlatButton(
+                onPressed: () async {
+                  Map<PermissionGroup, PermissionStatus> permissions =
+                  await PermissionHandler().requestPermissions([PermissionGroup.camera]);
+                  print(permissions);
+                  if (permissions[PermissionGroup.camera] == PermissionStatus.granted) {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return  CupertinoAlertDialog(
+                          title: Text("permission"),
+                          content: Text('Request permission is OK'),
+                          actions: <Widget>[
+                            CupertinoDialogAction(
+                              child: Text("confirm"),
+                              onPressed: () => Navigator.pop(context),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                    setState(() {
+                      isOk = true;
+                    });
+                  }
+                },
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.pan_tool,color:Colors.white),
+                    SizedBox(width: 5,),
+                    Text(' Request permission"First"',style: TextStyle(color: Colors.white),),
+                  ],
+                ),
+                color: Colors.red[900],
+              ),
             ),
-
+            SizedBox(height: 20,),
             if (isOk)
               Container(
                 width: 320,
@@ -389,10 +424,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           IconButton(
                             icon: Icon(
                               Icons.content_copy,
+                              color:copyed? Colors.blue:Colors.grey,
                               size: 25,
                             ),
                             onPressed: () {
                               Clipboard.setData(ClipboardData(text: data));
+                              setState(() {
+                                copyed =true;
+                              });
                             },
                           )
                         ],
@@ -403,10 +442,33 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               ),
             Column(
               children: <Widget>[
+                SizedBox(height: 20,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     FlatButton(
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0),
+                            side: BorderSide(color: Colors.blue,width: 2)),
+                      color: Colors.blueGrey,
+                        onPressed: () {
+                          assert(_controller != null);
+                          _controller.startCamera(onScan);
+                        },
+                        child: Row(
+                          children: <Widget>[
+                            Icon(Icons.camera,color: Colors.blue,),
+                            Text(' New Scan"after stop"'),
+                          ],
+                        )),
+                  ],
+                ),
+                SizedBox(height: 15,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    FlatButton(
+                      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0),
+                          side: BorderSide(color: Colors.blue,width: 2)),
                       onPressed: () async {
                         Navigator.push(
                             context,
@@ -415,12 +477,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       },
                       child: Row(
                         children: <Widget>[
-                          Icon(Icons.fullscreen),
+                          Icon(Icons.fullscreen,),
                           Text("Full Screen")
                         ],
                       ),
                     ),
+                    SizedBox(width: 10,),
                     FlatButton(
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0),
+                            side: BorderSide(color: Colors.blue,width: 2)),
                         onPressed: () async {
                           var image = await ImagePicker.pickImage(
                               source: ImageSource.gallery);
@@ -432,7 +497,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         },
                         child: Row(
                           children: <Widget>[
-                            Icon(Icons.satellite),
+                            Icon(Icons.satellite,color: Colors.teal,),
                             Text("scan pictures"),
                           ],
                         )),
@@ -442,27 +507,19 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     FlatButton(
+                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0),
+                            side: BorderSide(color: Colors.blue,width: 2)),
                         onPressed: () {
                           assert(_controller != null);
                           _controller.setFlashlight();
                         },
                         child: Row(
                           children: <Widget>[
-                            Icon(Icons.flash_on),
+                            Icon(Icons.flash_on,color: Colors.amber,),
                             Text("flash"),
                           ],
                         )),
-                    FlatButton(
-                        onPressed: () {
-                          assert(_controller != null);
-                          _controller.startCamera(onScan);
-                        },
-                        child: Row(
-                          children: <Widget>[
-                            Icon(Icons.camera),
-                            Text(' New Scan"after stop"'),
-                          ],
-                        )),
+
                   ],
                 ),
               ],
