@@ -2,6 +2,11 @@
 
 QR Scanner
 
+<p float="left">
+  <img src="https://github.com/EslamFares/QR-Scaner/blob/master/img%20from%20app/Screenshot_20200505-183445.jpg" width="200" />
+  <img src="https://github.com/EslamFares/QR-Scaner/blob/master/img%20from%20app/Screenshot_20200505-183437.jpg" width="200" /> 
+  <img src="https://github.com/EslamFares/QR-Scaner/blob/master/img%20from%20app/Screenshot_20200505-180436.jpg" width="200" />
+</p>
 ## Getting Started
 
 This project is a starting point for a Flutter application.
